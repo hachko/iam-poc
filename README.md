@@ -1,2 +1,5 @@
 # iam-poc
 Full-stack spring boot / angular small multi-iam login template
+
+This projets manages identity management through its spring boot back-end
+The iam framework used to implement identity management on top of spring-security is pac4j
