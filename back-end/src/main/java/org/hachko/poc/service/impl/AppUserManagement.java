@@ -3,6 +3,7 @@ package org.hachko.poc.service.impl;
 import java.util.List;
 
 import org.hachko.poc.dto.AppUserDto;
+import org.hachko.poc.repository.UserRepository;
 import org.hachko.poc.service.AppUserService;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,9 @@ import lombok.AllArgsConstructor;
 @Service
 @AllArgsConstructor
 public class AppUserManagement implements AppUserService {
+
+    private final UserRepository userRepository;
+
     @Override
     public List<AppUserDto> getAllUsers() {
         return null;
