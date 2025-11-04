@@ -5,8 +5,8 @@ import org.hachko.poc.dto.AppUserDto;
 
 public interface AppUserService {
     List<AppUserDto> getAllUsers();
-    AppUserDto getUserById(String id);
+    AppUserDto getUserById(Long id);
     AppUserDto createUser(AppUserDto userDto);
     AppUserDto updateUser(AppUserDto userDto);
-    void deleteUser(String id);
+    void deleteUser(Long id);
 }
