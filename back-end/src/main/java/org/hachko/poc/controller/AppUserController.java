@@ -3,12 +3,20 @@ package org.hachko.poc.controller;
 import java.util.List;
 
 import org.hachko.poc.dto.AppUserDto;
+import org.hachko.poc.exception.user.AppUserConflictException;
+import org.hachko.poc.exception.user.AppUserDuplicateEmailException;
+import org.hachko.poc.exception.user.AppUserDuplicateUserNameException;
+import org.hachko.poc.exception.user.AppUserNotFoundException;
 import org.hachko.poc.service.AppUserService;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import lombok.AllArgsConstructor;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,21 +39,60 @@ public class AppUserController {
 
     @GetMapping("/{id}")
     public AppUserDto getUserById(@PathVariable Long id) {
-        return appUserService.getUserById(id);
+        try{ 
+            return appUserService.getUserById(id);
+        } catch (AppUserNotFoundException apusex) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, apusex.getMessage());
+        }
     }
 
     @PostMapping("/create")
+    @ResponseStatus(HttpStatus.CREATED)
     public AppUserDto createUser(@RequestBody AppUserDto userDto) {
-        return appUserService.createUser(userDto);
+        if(userDto.getId() != null) {
+            throw new ResponseStatusException(
+                HttpStatus.BAD_REQUEST, "New user cannot already have an ID."
+            );
+        }
+        try {
+            return appUserService.createUser(userDto);
+        } catch (AppUserConflictException apusex) {
+            throw new ResponseStatusException(
+                HttpStatus.CONFLICT, apusex.getMessage()
+            );
+        }        
     }
 
     @PutMapping("/update")
+    @ResponseStatus(HttpStatus.OK)
     public AppUserDto updateUser(@RequestBody AppUserDto userDto) {
-        return appUserService.updateUser(userDto);
+        if(userDto.getId() == null) {
+            throw new ResponseStatusException(
+                HttpStatus.BAD_REQUEST, "Updated user must have an ID."
+            );
+        }
+        try {
+            return appUserService.updateUser(userDto);
+        } catch (AppUserConflictException apusex) {
+            throw new ResponseStatusException(
+                HttpStatus.CONFLICT, apusex.getMessage()
+            );
+        } catch (AppUserNotFoundException apusex) {
+            throw new ResponseStatusException(
+                HttpStatus.NOT_FOUND, apusex.getMessage()
+            );
+        }
     }
 
     @DeleteMapping("/delete/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser(@PathVariable Long id) {
-        appUserService.deleteUser(id);
+        try {
+            appUserService.deleteUser(id);
+        } catch (AppUserNotFoundException apusex) {
+            throw new ResponseStatusException(
+                HttpStatus.NOT_FOUND, apusex.getMessage()
+            );
+        }
     }
 }

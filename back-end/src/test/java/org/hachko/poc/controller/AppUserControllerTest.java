@@ -1,7 +1,13 @@
 package org.hachko.poc.controller;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.hamcrest.Matchers.hasSize;
@@ -9,11 +15,14 @@ import static org.hamcrest.Matchers.hasSize;
 import java.util.List;
 
 import org.hachko.poc.dto.AppUserDto;
+import org.hachko.poc.exception.user.AppUserConflictException;
+import org.hachko.poc.exception.user.AppUserNotFoundException;
 import org.hachko.poc.service.impl.AppUserManagement;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest
@@ -21,23 +30,102 @@ public class AppUserControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
     @MockBean
-    private AppUserManagement appUserManagement;
+    private AppUserManagement appUserManagement;    
 
-    void shouldCreateUserSuccessfully() {
-        // Test implementation goes here
+    @Test
+    void shouldCreateUserSuccessfully() throws Exception {
+        when(appUserManagement.createUser(any())).thenReturn(AppUserDto.builder().build());
+        mockMvc.perform(
+            post("/api/users/create")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("{\"username\": \"testuser\", \"email\": \"testuser@example.com\", \"password\": \"password123\"}"))
+            .andExpect(status().isCreated());
     }
 
-    void shouldGetUserByIdSuccessfully() {
-        // Test implementation goes here
+    @Test
+    void shouldNotCreateUserWhenIdProvided() throws Exception {
+        mockMvc.perform(
+            post("/api/users/create")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("{\"id\": 1, \"username\": \"testuser\", \"email\": \"testuser@example.com\", \"password\": \"password123\"}"))
+            .andExpect(status().isBadRequest());
     }
 
-    void shouldUpdateUserSuccessfully() {
-        // Test implementation goes here
+    @Test
+    void shoulNotCreateUserWhenExceptionThrownFromService() throws Exception {
+        when(appUserManagement.createUser(any())).thenThrow(new AppUserConflictException("Service error"));
+        mockMvc.perform(
+            post("/api/users/create")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("{\"username\": \"testuser\", \"email\": \"testuser@example.com\", \"password\": \"password123\"}"))
+            .andExpect(status().isConflict());
     }
 
-    void shouldDeleteUserSuccessfully() {
-        // Test implementation goes here
+    @Test
+    void shouldGetUserByIdSuccessfully() throws Exception {
+        when(appUserManagement.getUserById(anyLong())).thenReturn(
+            AppUserDto.builder()
+            .build()
+        );
+        mockMvc.perform(get("/api/users/1"))
+            .andExpect(status().isOk());
+    }
+
+    @Test
+    void shouldGetErrorWhenUserNotFoundById() throws Exception {
+        when(appUserManagement.getUserById(anyLong())).thenThrow(new AppUserNotFoundException("User not found"));
+        mockMvc.perform(get("/api/users/1"))
+            .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void shouldUpdateUserSuccessfully() throws Exception {
+        when(appUserManagement.updateUser(any())).thenReturn(
+            AppUserDto.builder()
+            .build()
+        );
+        mockMvc.perform(
+            put("/api/users/update")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("{\"id\": 1, \"username\": \"updateduser\", \"email\": \"test.user@example.com\"}"))
+            .andExpect(status().isOk());
+    }
+
+    @Test
+    void shouldGetErrorWhenUserToUpdateNotFound() throws Exception {
+        when(appUserManagement.updateUser(any())).thenThrow(new AppUserNotFoundException("User to update not found"));
+        mockMvc.perform(
+            put("/api/users/update")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("{\"id\": 1, \"username\": \"updateduser\", \"email\": \"test.user@example.com\"}"))
+            .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void shouldGetErrorWhenExceptionThrownFromService() throws Exception {
+        when(appUserManagement.updateUser(any())).thenThrow(new AppUserConflictException("Service error"));        
+        mockMvc.perform(
+            put("/api/users/update")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("{\"id\": 1, \"username\": \"updateduser\", \"email\": \"test.user@example.com\"}"))
+            .andExpect(status().isConflict());
+    }
+
+    @Test
+    void shouldDeleteUserSuccessfully() throws Exception {
+        mockMvc.perform(
+            delete("/api/users/delete/1"))
+            .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void shouldGetErrorWhenDeleteUserNotFound() throws Exception {
+        doThrow(AppUserNotFoundException.class).when(appUserManagement).deleteUser(anyLong());
+        mockMvc.perform(
+            delete("/api/users/delete/1"))
+            .andExpect(status().isNotFound());
     }
 
     @Test
