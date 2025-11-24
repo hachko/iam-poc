@@ -7,16 +7,16 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
   <properties>
-    <java.version>18</java.version>
-    <lombok.version>1.18.28</lombok.version>
-    <mapstruct.version>1.5.5.Final</mapstruct.version>
+    <java.version>22</java.version>
+    <lombok.version>1.18.34</lombok.version>
+    <mapstruct.version>1.6.3</mapstruct.version>
     <h2.version>2.2.224</h2.version>
   </properties>
 
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>3.1.12</version>
+    <version>3.3.5</version>
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
 

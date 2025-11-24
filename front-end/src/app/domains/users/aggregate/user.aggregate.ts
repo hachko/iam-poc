@@ -1,7 +1,9 @@
 import { BehaviorSubject, Observable, of, tap } from "rxjs";
 import { User } from "../model/user.model";
 import { UserService } from "../service/user.service";
+import { Injectable } from "@angular/core";
 
+@Injectable({providedIn: 'root'})
 export class UserAggregate {
     private user$ = new BehaviorSubject<User[]>([]);
 

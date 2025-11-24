@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { catchError, Observable, of, tap } from 'rxjs';
 import { User } from '../model/user.model';
 import { environment } from '../../../../environments/default.env';
 
@@ -12,7 +12,13 @@ export class UserService {
     constructor(private http: HttpClient) {}
 
     getUsers(): Observable<User[]> {
-        return this.http.get<User[]>(this.apiUrl);
+        return this.http.get<User[]>(this.apiUrl + '/all').pipe(
+            tap(users => console.log('users fetched : ', users)),
+            catchError(err => {
+                console.log('Error fetching users : ', err);
+                return of([]);
+            })
+        );
     }
 
     getUserById(id: number): Observable<User> {
@@ -20,14 +26,14 @@ export class UserService {
     }
 
     createUser(user: User): Observable<User> {
-        return this.http.post<User>(this.apiUrl, user);
+        return this.http.post<User>(this.apiUrl + '/create', user);
     }
 
     updateUser(id: number, user: User): Observable<User> {
-        return this.http.put<User>(`${this.apiUrl}/${id}`, user);
+        return this.http.put<User>(`${this.apiUrl + '/update'}/${id}`, user);
     }
 
     deleteUser(id: number): Observable<void> {
-        return this.http.delete<void>(`${this.apiUrl}/${id}`);
+        return this.http.delete<void>(`${this.apiUrl + '/delete'}/${id}`);
     }
 }

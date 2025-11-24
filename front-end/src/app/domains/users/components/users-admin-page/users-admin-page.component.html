@@ -1,1 +1,12 @@
-<p>users-admin-page works!</p>
+<section class="users-admin">
+  <header class="page-header">
+    <h2>Users Menu</h2>
+    <button class="btn btn-add" (click)="openAddUserModal()">Add User</button>
+  </header>
+
+  <!-- Liste des utilisateurs -->
+  <app-users-list></app-users-list>
+
+  <!-- Modale générique (affichée conditionnellement) -->
+  <app-modal-host></app-modal-host>
+</section>

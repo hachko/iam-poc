@@ -1,0 +1,18 @@
+.logo-bar {
+  height: 48px;
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+  border-bottom: 1px solid #dadce0;
+  background-color: #fff;
+}
+
+.logo {
+  height: 32px;
+}
+
+.content {
+  padding: 1rem;
+  background-color: #fff;
+  min-height: calc(100vh - 96px); /* logo bar + header */
+}

@@ -1,0 +1,48 @@
+.user-list table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+}
+
+.user-list th, .user-list td {
+  border: 1px solid #dadce0;
+  padding: 0.5rem;
+  text-align: left;
+}
+
+.user-list th {
+  background-color: #f1f3f4;
+}
+
+.user-list tr:hover {
+  background-color: #f9f9f9;
+}
+
+.btn {
+  margin-right: 0.5rem;
+  padding: 0.3rem 0.6rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-view {
+  background-color: #1a73e8;
+  color: #fff;
+}
+
+.btn-edit {
+  background-color: #fbbc04;
+  color: #000;
+}
+
+.btn-delete {
+  background-color: #ea4335;
+  color: #fff;
+}
+
+.btn-add {
+  background-color: #34a853;
+  color: #fff;
+  padding: 0.5rem 1rem;
+}
