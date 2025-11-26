@@ -13,6 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.hamcrest.Matchers.hasSize;
 
 import java.util.List;
+import java.util.Set;
 
 import org.hachko.poc.dto.AppUserDto;
 import org.hachko.poc.exception.user.AppUserConflictException;
@@ -131,7 +132,7 @@ public class AppUserControllerTest {
     @Test
     void shouldGetAllUsersSuccessfully() throws Exception {
         when(appUserManagement.getAllUsers()).thenReturn(List.of(
-            new AppUserDto(1L, "JohnDoe", "John.Doe@example.com", "")
+            new AppUserDto(1L, "JohnDoe", "John.Doe@example.com", "", Set.of())
         ));
         mockMvc.perform(get("/api/users/all"))
             .andExpect(status().isOk())

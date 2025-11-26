@@ -6,9 +6,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.List;
 import java.util.Optional;
-
 import org.hachko.poc.dto.AppUserDto;
-import org.hachko.poc.exception.user.AppUserConflictException;
 import org.hachko.poc.exception.user.AppUserDuplicateEmailException;
 import org.hachko.poc.exception.user.AppUserDuplicateUserNameException;
 import org.hachko.poc.exception.user.AppUserNotFoundException;
@@ -16,7 +14,6 @@ import org.hachko.poc.model.AppUser;
 import org.hachko.poc.repository.UserRepository;
 import org.hachko.poc.service.impl.AppUserManagement;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -60,27 +57,6 @@ public class AppUserManagementTest {
         return testData.stream().filter(user -> user.getEmail().equals(email)).findFirst();
     }    
     
-    private void setAllMockBehaviors() {
-
-        when(userRepository.findById(anyLong()))
-            .thenAnswer(invocation -> {
-                Long id = invocation.getArgument(0);
-                return getUserById(id);
-            });
-
-        when(userRepository.findByUsername(anyString()))
-            .thenAnswer(invocation -> {
-                String username = invocation.getArgument(0);
-                return getUserByUsername(username);
-            });
-
-        when(userRepository.findByEmail(anyString()))
-            .thenAnswer(invocation -> {
-                String email = invocation.getArgument(0);
-                return getUserByEmail(email);
-            });
-    }
-
     @Test
     void exceptionThrownWhenUserNotFound() {
         when(userRepository.findById(anyLong()))
