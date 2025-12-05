@@ -1,34 +1,32 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { User } from '../../model/user.model';
 import { CommonModule } from '@angular/common';
 import { UserAggregate } from '../../aggregate/user.aggregate';
 import { Observable } from 'rxjs/internal/Observable';
+import { ModalHostComponent } from '../../../shared/modal-host/modal-host.component';
+import { UserEditComponent } from '../user-edit/user-edit.component';
 
 @Component({
   selector: 'app-users-list',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ModalHostComponent],
   templateUrl: './users-list.component.html',
   styleUrl: './users-list.component.css'
 })
 export class UsersListComponent  implements OnInit {  
   users$!: Observable<User[]>;
 
+  @ViewChild('modalHost') modalHost!: ModalHostComponent
+
   constructor(private userAggregate: UserAggregate) {};
 
   ngOnInit(): void {
     this.users$ = this.userAggregate.users;
     this.userAggregate.loadUsers();
-  }
-  
-  users: User[] = [
-    { id: 1, username: 'Alice Dupont', email: 'alice@example.com', roles: [] },
-    { id: 2, username: 'Bob Martin', email: 'bob@example.com', roles: [] },
-    { id: 3, username: 'Charlie Durand', email: 'charlie@example.com', roles: [] }
-  ];
+  }  
 
   viewUser(user: User) {
-    console.log('Viewing user:', user);
+    this.openModal(user, 'view');
   }
 
   editUser(user: User) {
@@ -41,5 +39,9 @@ export class UsersListComponent  implements OnInit {
 
   addUser() {
     console.log('Adding new user');
+  }
+
+  openModal(user: User, mode: 'edit' | 'view') {
+    this.modalHost.open(UserEditComponent, user, mode);
   }
 }

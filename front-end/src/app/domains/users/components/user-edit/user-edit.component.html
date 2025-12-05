@@ -1,1 +1,19 @@
-<p>user-edit works!</p>
+<form [formGroup]="userForm" (ngSubmit)="save()" *ngIf="mode === 'edit'">
+    <label>Username</label>
+    <input formControlName="username" />
+    <label>Email</label>
+    <input formControlName="email" type="email" />
+    <label>Roles</label>
+    <select formControlName="roles" multiple>
+        <option *ngFor="let role of availableRoles">
+            {{role}}
+        </option>
+    </select>
+    <button type="submit">save</button>
+</form>
+<!-- READ ONLY MODE-->
+<div *ngIf="mode==='view'">
+    <p><strong>Username : </strong>{{user?.username}}</p>
+    <p><strong>Email : </strong>{{user?.email}}</p>
+    <p><strong>Roles : </strong>{{user?.roles?.join(' | ')}}</p>
+</div>

@@ -1,1 +1,10 @@
-<p>modal-host works!</p>
+<div class="modal" *ngIf="isOpen">
+    <div class="modal-content">
+        <button class="button-close" (click)="close()">Close</button>
+        <app-user-edit
+            [user]="data"
+            [mode]="mode"
+            (saved)="close()">
+        </app-user-edit>
+    </div>
+</div>
