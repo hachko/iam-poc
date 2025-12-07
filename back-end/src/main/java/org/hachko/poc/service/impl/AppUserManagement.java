@@ -35,6 +35,7 @@ public class AppUserManagement implements AppUserService {
     }
 
     @Override
+    @Transactional
     public AppUserDto createUser(AppUserDto userDto) throws AppUserDuplicateUserNameException, AppUserDuplicateEmailException {
         if(userRepository.findByUsername(userDto.getUsername()).isPresent()) {
             throw new AppUserDuplicateUserNameException("Create : username '" + userDto.getUsername() + "' is already taken.");
@@ -46,6 +47,7 @@ public class AppUserManagement implements AppUserService {
     }
 
     @Override
+    @Transactional
     public AppUserDto updateUser(AppUserDto userDto) throws AppUserDuplicateUserNameException, AppUserDuplicateEmailException {        
         if(userRepository.findById(userDto.getId()).isEmpty()) {
             throw new AppUserNotFoundException("Update : user with ID " + userDto.getId() + " not found.");
@@ -60,6 +62,7 @@ public class AppUserManagement implements AppUserService {
     }
 
     @Override
+    @Transactional
     public void deleteUser(Long id) throws AppUserNotFoundException {
         if(userRepository.findById(id).isEmpty()) {
             throw new AppUserNotFoundException("Delete : user with ID " + id + " not found.");

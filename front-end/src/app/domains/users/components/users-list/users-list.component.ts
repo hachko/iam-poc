@@ -30,7 +30,7 @@ export class UsersListComponent  implements OnInit {
   }
 
   editUser(user: User) {
-    console.log('Editing user:', user);
+    this.openModal(user, 'edit');
   }
 
   deleteUser(user: User) {

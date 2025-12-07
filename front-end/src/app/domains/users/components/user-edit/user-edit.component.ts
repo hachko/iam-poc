@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { User } from '../../model/user.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -12,20 +12,27 @@ import { CommonModule } from '@angular/common';
   styleUrl: './user-edit.component.css'
 })
 export class UserEditComponent implements OnInit {
-  @Input() mode: 'view' | 'edit' = 'view';
-  @Input() user?: User
-  @Output() saved = new EventEmitter<void>();
-
+  mode: 'view' | 'edit' = 'view';
+  user?: User;
   userForm!: FormGroup;
+  @Output() saved = new EventEmitter<void>();
+  
   // TODO fetch them with aggregate / service
   availableRoles = ['USER','ADMIN'];
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    @Inject('data') user: User,
+    @Inject('mode') mode: 'view' | 'edit'
+  ) {
+    this.user = user;
+    this.mode = mode;
+  }
 
   ngOnInit(): void {
     this.userForm = this.formBuilder.group({
       username: [{value: this.user?.username, disabled: this.mode === 'view'}, Validators.required],
-      email: [{value: this.user?.email, disabled: this.mode === 'view'}, Validators.required, Validators.email],
+      email: [{value: this.user?.email, disabled: this.mode === 'view'}, [Validators.required, Validators.email]],
       roles: [{value: this.user?.roles, disabled: this.mode === 'view'}]
     });
   }
@@ -35,7 +42,11 @@ export class UserEditComponent implements OnInit {
       const udpatedUser = this.userForm.value;
       // TODO user agregate and service to persist
       this.saved.emit();
-    }
+    }    
+  }
+
+  get roleNames(): string {
+    return this.user?.roles?.map(role => role.name).join(' | ') ?? '';
   }
 
 }
