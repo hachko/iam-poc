@@ -26,22 +26,24 @@ export class UsersListComponent  implements OnInit {
   }  
 
   viewUser(user: User) {
-    this.openModal(user, 'view');
+    this.openModal('view', user);
   }
 
   editUser(user: User) {
-    this.openModal(user, 'edit');
+    this.openModal('edit', user);
   }
 
   deleteUser(user: User) {
     console.log('Deleting user:', user);
+    this.userAggregate.deleteUser(user.id);
   }
 
   addUser() {
     console.log('Adding new user');
+    this.openModal('edit', {} as User)
   }
 
-  openModal(user: User, mode: 'edit' | 'view') {
+  openModal(mode: 'edit' | 'view', user: User) {
     this.modalHost.open(UserEditComponent, user, mode);
   }
 }

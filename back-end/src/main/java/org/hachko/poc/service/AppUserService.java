@@ -7,6 +7,6 @@ public interface AppUserService {
     List<AppUserDto> getAllUsers();
     AppUserDto getUserById(Long id);
     AppUserDto createUser(AppUserDto userDto);
-    AppUserDto updateUser(AppUserDto userDto);
+    AppUserDto updateUser(AppUserDto userBeforeUpdate, AppUserDto userDtoToUpdate);
     void deleteUser(Long id);
 }

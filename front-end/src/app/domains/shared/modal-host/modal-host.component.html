@@ -1,7 +1,6 @@
 <div class="modal" *ngIf="isOpen">
     <div class="modal-content">
         <button class="button-close" (click)="close()">Close</button>
-        <ng-container *ngComponentOutlet="component; injector: injector!">
-        </ng-container>
-    </div>
+        <ng-template #modalContent></ng-template>
+    </div>    
 </div>

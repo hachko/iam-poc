@@ -26,7 +26,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-@WebMvcTest
+@WebMvcTest(AppUserController.class)
 public class AppUserControllerTest {
 
     @Autowired
@@ -83,12 +83,12 @@ public class AppUserControllerTest {
 
     @Test
     void shouldUpdateUserSuccessfully() throws Exception {
-        when(appUserManagement.updateUser(any())).thenReturn(
+        when(appUserManagement.updateUser(any(), any())).thenReturn(
             AppUserDto.builder()
             .build()
         );
         mockMvc.perform(
-            put("/api/users/update")
+            put("/api/users/update/1")
             .contentType(MediaType.APPLICATION_JSON)
             .content("{\"id\": 1, \"username\": \"updateduser\", \"email\": \"test.user@example.com\"}"))
             .andExpect(status().isOk());
@@ -96,9 +96,9 @@ public class AppUserControllerTest {
 
     @Test
     void shouldGetErrorWhenUserToUpdateNotFound() throws Exception {
-        when(appUserManagement.updateUser(any())).thenThrow(new AppUserNotFoundException("User to update not found"));
+        when(appUserManagement.updateUser(any(), any())).thenThrow(new AppUserNotFoundException("User to update not found"));
         mockMvc.perform(
-            put("/api/users/update")
+            put("/api/users/update/1")
             .contentType(MediaType.APPLICATION_JSON)
             .content("{\"id\": 1, \"username\": \"updateduser\", \"email\": \"test.user@example.com\"}"))
             .andExpect(status().isNotFound());
@@ -106,9 +106,9 @@ public class AppUserControllerTest {
 
     @Test
     void shouldGetErrorWhenExceptionThrownFromService() throws Exception {
-        when(appUserManagement.updateUser(any())).thenThrow(new AppUserConflictException("Service error"));        
+        when(appUserManagement.updateUser(any(), any())).thenThrow(new AppUserConflictException("Service error"));        
         mockMvc.perform(
-            put("/api/users/update")
+            put("/api/users/update/1")
             .contentType(MediaType.APPLICATION_JSON)
             .content("{\"id\": 1, \"username\": \"updateduser\", \"email\": \"test.user@example.com\"}"))
             .andExpect(status().isConflict());

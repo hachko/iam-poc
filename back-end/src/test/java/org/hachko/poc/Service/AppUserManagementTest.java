@@ -74,29 +74,7 @@ public class AppUserManagementTest {
     }    
 
     @Test
-    void exceptionThrownWhenUserToUpdateNotFound() {
-        when(userRepository.findById(anyLong()))
-            .thenAnswer(invocation -> {
-                Long id = invocation.getArgument(0);
-                return getUserById(id);
-            });
-        AppUserNotFoundException apusex = Assertions.assertThrows(AppUserNotFoundException.class, () -> {
-            appUserManagement.updateUser(AppUserDto.builder()
-                .id(3L)
-                .username("JaneDoe")
-                .email("jane.doe@example.com")
-                .build());
-        });
-        Assertions.assertEquals("Update : user with ID 3 not found.", apusex.getMessage());
-    }    
-
-    @Test
-    void exceptionThrownWhenUpdateUserWithDuplicateUsername() {
-        when(userRepository.findById(anyLong()))
-            .thenAnswer(invocation -> {
-                Long id = invocation.getArgument(0);
-                return getUserById(id);
-            });
+    void exceptionThrownWhenUpdateUserWithDuplicateUsername() {       
         when(userRepository.findByUsername(anyString()))
             .thenAnswer(invocation -> {
                 String username = invocation.getArgument(0);
@@ -104,7 +82,9 @@ public class AppUserManagementTest {
             });
         AppUserDuplicateUserNameException apusex = 
         Assertions.assertThrows(AppUserDuplicateUserNameException.class, () -> {
-            appUserManagement.updateUser(AppUserDto.builder()
+            appUserManagement.updateUser(
+                AppUserDto.builder().id(1L).build(),
+                AppUserDto.builder()
                 .id(1L)
                 .username("JaneDoe")
                 .build());
@@ -114,11 +94,6 @@ public class AppUserManagementTest {
   
     @Test
     void exceptionThrownWhenUpdateUserWithDuplicateEmail() {
-        when(userRepository.findById(anyLong()))
-            .thenAnswer(invocation -> {
-                Long id = invocation.getArgument(0);
-                return getUserById(id);
-            });
         when(userRepository.findByEmail(anyString()))
             .thenAnswer(invocation -> {
                 String email = invocation.getArgument(0);
@@ -126,7 +101,9 @@ public class AppUserManagementTest {
             });
         AppUserDuplicateEmailException apusex = 
         Assertions.assertThrows(AppUserDuplicateEmailException.class, () -> {
-            appUserManagement.updateUser(AppUserDto.builder()
+            appUserManagement.updateUser(
+                AppUserDto.builder().id(1L).build(),
+                AppUserDto.builder()
                 .id(1L)
                 .email("jane.doe@example.com")
                 .build());

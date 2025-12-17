@@ -7,6 +7,7 @@ import org.hachko.poc.exception.user.AppUserConflictException;
 import org.hachko.poc.exception.user.AppUserNotFoundException;
 import org.hachko.poc.service.AppUserService;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
@@ -62,7 +63,8 @@ public class AppUserController {
         }        
     }
 
-    @PutMapping("/update")
+    @PutMapping("/update/{id}")
+    @CrossOrigin(origins = "http://localhost:4200", methods = {RequestMethod.PUT, RequestMethod.OPTIONS})
     @ResponseStatus(HttpStatus.OK)
     public AppUserDto updateUser(@RequestBody AppUserDto userDto) {
         if(userDto.getId() == null) {
@@ -71,7 +73,8 @@ public class AppUserController {
             );
         }
         try {
-            return appUserService.updateUser(userDto);
+            AppUserDto userDtoBeforeUpdate = appUserService.getUserById(userDto.getId());
+            return appUserService.updateUser(userDtoBeforeUpdate, userDto);
         } catch (AppUserConflictException apusex) {
             throw new ResponseStatusException(
                 HttpStatus.CONFLICT, apusex.getMessage()

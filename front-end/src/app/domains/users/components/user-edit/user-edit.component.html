@@ -3,10 +3,12 @@
     <input formControlName="username" />
     <label>Email</label>
     <input formControlName="email" type="email" />
+    <label>Password</label>
+    <input formControlName="password" />
     <label>Roles</label>
     <select formControlName="roles" multiple>
-        <option *ngFor="let role of availableRoles">
-            {{role}}
+        <option *ngFor="let role of availableRoles$ | async" [ngValue]="role">
+            {{role.name}}
         </option>
     </select>
     <button type="submit">save</button>

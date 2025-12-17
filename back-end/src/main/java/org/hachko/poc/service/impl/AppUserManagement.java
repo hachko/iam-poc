@@ -48,17 +48,17 @@ public class AppUserManagement implements AppUserService {
 
     @Override
     @Transactional
-    public AppUserDto updateUser(AppUserDto userDto) throws AppUserDuplicateUserNameException, AppUserDuplicateEmailException {        
-        if(userRepository.findById(userDto.getId()).isEmpty()) {
-            throw new AppUserNotFoundException("Update : user with ID " + userDto.getId() + " not found.");
+    public AppUserDto updateUser(AppUserDto userDtoBeforeUpdate, AppUserDto userDtoToUpdate) throws AppUserDuplicateUserNameException, AppUserDuplicateEmailException {        
+
+        if(userRepository.findByUsername(userDtoToUpdate.getUsername()).isPresent() &&
+        !userDtoToUpdate.getUsername().equals(userDtoBeforeUpdate.getUsername())) {
+            throw new AppUserDuplicateUserNameException("Update : username '" + userDtoToUpdate.getUsername() + "' is already taken.");
         }
-        if(userRepository.findByUsername(userDto.getUsername()).isPresent()) {
-            throw new AppUserDuplicateUserNameException("Update : username '" + userDto.getUsername() + "' is already taken.");
+        if(userRepository.findByEmail(userDtoToUpdate.getEmail()).isPresent() &&
+        !userDtoToUpdate.getEmail().equals(userDtoBeforeUpdate.getEmail())) {
+            throw new AppUserDuplicateEmailException("Update : email '" + userDtoToUpdate.getEmail() + "' is already taken.");
         }
-        if(userRepository.findByEmail(userDto.getEmail()).isPresent()) {
-            throw new AppUserDuplicateEmailException("Update : email '" + userDto.getEmail() + "' is already taken.");
-        }
-        return userMapper.toDto(userRepository.save(userMapper.toEntity(userDto)));
+        return userMapper.toDto(userRepository.save(userMapper.toEntity(userDtoToUpdate)));
     }
 
     @Override

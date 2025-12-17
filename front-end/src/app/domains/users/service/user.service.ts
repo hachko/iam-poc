@@ -26,7 +26,13 @@ export class UserService {
     }
 
     createUser(user: User): Observable<User> {
-        return this.http.post<User>(this.apiUrl + '/create', user);
+        return this.http.post<User>(this.apiUrl + '/create', user).pipe(
+            tap(user => console.log('user created successfully : ', user)),
+            catchError(err => {
+                console.log('failed to create user : ', err);
+                return of();
+            })
+        );
     }
 
     updateUser(id: number, user: User): Observable<User> {

@@ -1,8 +1,6 @@
 package org.hachko.poc.service.impl;
 
 import java.util.List;
-import java.util.Set;
-
 import org.hachko.poc.dto.RoleDto;
 import org.hachko.poc.mapper.UserMapper;
 import org.hachko.poc.repository.RoleRepository;
