@@ -15,9 +15,6 @@ export class ModalHostComponent implements AfterViewChecked{
   injector: Injector | null = null;
 
   ngAfterViewChecked() {
-    // console.log('vcr length : ', this.vcr.length);
-    console.log('isOpen : ', this.isOpen);
-    console.log('component : ', this.component);
     if (this.isOpen && this.component && this.vcr.length === 0) {
       const compRef = this.vcr.createComponent(this.component, {injector: this.injector!});
       if( (compRef.instance as any).saved ) {

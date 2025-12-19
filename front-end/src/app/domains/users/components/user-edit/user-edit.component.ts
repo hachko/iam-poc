@@ -49,7 +49,6 @@ export class UserEditComponent implements OnInit {
   save(): void {
     if(this.mode === 'edit' && this.userForm.valid) {
       const udpatedUser = this.userForm.value;
-      console.log('user to update : ', udpatedUser);
       if(this.user?.id) {
         udpatedUser.id = this.user.id;
         this.userAggregate.updateUser(udpatedUser);

@@ -1,0 +1,70 @@
+:root {
+    --form-label-width: 150px;
+    --gap-row: 0.6rem;
+    --gap-col: 1rem;
+    --input-padding: 0.45rem 0.6rem;
+    --border: 1px solid #d0d7de;
+    --radius: 6px;
+    --focus: 0 0 0 3px rgba(25, 118, 210, 0.12);
+}
+
+.user-form {
+    display: grid;
+    grid-template-columns: var(--form-label-width) 1fr;
+    gap: var(--gap-row) var(--gap-col);
+    align-items: center;
+    max-width: 720px;
+}
+
+.form-row label {
+    justify-self: end;
+    font-weight: 600;
+    padding-right: 0.5rem;
+}
+
+.form-row input,
+.form-row select,
+.form-row textarea {
+    width: 100%;
+    padding: var(--input-padding);
+    border: var(--border);
+    border-radius: var(--radius);
+    box-sizing: border-box;
+    background: #fff;
+}
+
+.form-row input:focus,
+.form-row select:focus,
+.form-row textarea:focus {
+    outline: none;
+    box-shadow: var(--focus);
+    border-color: #1976d2;
+}
+
+.form-actions {
+    grid-column: 2;
+    margin-top: 0.4rem;
+}
+
+.btn-primary {
+    background: #1976d2;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 0.8rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+@media (max-width: 640px) {
+    .user-form {
+        grid-template-columns: 1fr;
+    }
+
+    .form-row label {
+        justify-self: start;
+    }
+
+    .form-actions {
+        grid-column: 1;
+    }
+}

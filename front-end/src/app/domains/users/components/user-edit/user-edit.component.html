@@ -1,21 +1,30 @@
-<form [formGroup]="userForm" (ngSubmit)="save()" *ngIf="mode === 'edit'">
-    <label>Username</label>
-    <input formControlName="username" />
-    <label>Email</label>
-    <input formControlName="email" type="email" />
-    <label>Password</label>
-    <input formControlName="password" />
-    <label>Roles</label>
-    <select formControlName="roles" multiple>
-        <option *ngFor="let role of availableRoles$ | async" [ngValue]="role">
-            {{role.name}}
-        </option>
-    </select>
-    <button type="submit">save</button>
+<form class="user-form" [formGroup]="userForm" (ngSubmit)="save()" *ngIf="mode === 'edit'">
+    <div class="form-row"> 
+        <label for="username">Username</label> 
+        <input id="username" formControlName="username" />
+    </div>
+    <div class="form-row"> 
+        <label for="email">Email</label> 
+        <input id="email" formControlName="email" type="email" />
+    </div>
+    <div class="form-row"> 
+        <label for="password">Password</label> 
+        <input id="password" formControlName="password" type="password" /> 
+    </div>
+    <div class="form-row"> 
+        <label for="roles">Roles</label> 
+        <select id="roles" formControlName="roles" multiple>
+            <option *ngFor="let role of availableRoles$ | async" [ngValue]="role">
+                {{ role.name }} 
+            </option>
+        </select> 
+    </div>
+    <div class="form-actions"> 
+        <button type="submit" class="btn-primary">Save</button> 
+    </div>
 </form>
-<!-- READ ONLY MODE-->
-<div *ngIf="mode==='view'">
-    <p><strong>Username : </strong>{{user?.username}}</p>
-    <p><strong>Email : </strong>{{user?.email}}</p>
-    <p><strong>Roles : </strong>{{roleNames}}</p>
+<div *ngIf="mode === 'view'">
+    <p><strong>Username:</strong> {{ user?.username }}</p>
+    <p><strong>Email:</strong> {{ user?.email }}</p>
+    <p><strong>Roles:</strong> {{ roleNames }}</p>
 </div>
