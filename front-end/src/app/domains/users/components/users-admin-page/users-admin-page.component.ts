@@ -10,7 +10,4 @@ import { ModalHostComponent } from '../../../shared/modal-host/modal-host.compon
   styleUrl: './users-admin-page.component.css'
 })
 export class UsersAdminPageComponent {
-  openAddUserModal() {
-    console.log('App User Modal triggered');
-  }  
 }

@@ -1,0 +1,6 @@
+<div class="msg-container">
+  <div class="msg" *ngFor="let m of (messages$ | async)" [ngClass]="'msg--' + m.type">
+    <div class="msg__text">{{ m.text }}</div>
+    <button class="msg__close" (click)="dismiss(m)">×</button>
+  </div>
+</div>
