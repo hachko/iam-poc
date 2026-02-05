@@ -22,3 +22,10 @@ server:
     key-store-password: ${SSL_KEYSTORE_PASSWORD}
     key-store-type: PKCS12
     key-alias: local-back-end
+  servlet: 
+    session:
+      cookie:
+        same-site: NONE
+        secure: false
+logging:
+  exception-conversion-word: '%m%n'

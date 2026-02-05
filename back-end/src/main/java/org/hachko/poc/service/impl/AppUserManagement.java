@@ -7,8 +7,11 @@ import org.hachko.poc.exception.user.AppUserDuplicateEmailException;
 import org.hachko.poc.exception.user.AppUserDuplicateUserNameException;
 import org.hachko.poc.exception.user.AppUserNotFoundException;
 import org.hachko.poc.mapper.UserMapper;
+import org.hachko.poc.model.AppUser;
 import org.hachko.poc.repository.UserRepository;
 import org.hachko.poc.service.AppUserService;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -22,12 +25,16 @@ public class AppUserManagement implements AppUserService {
 
     private final UserMapper userMapper;
 
+    private final PasswordEncoder passwordEncoder;
+
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public List<AppUserDto> getAllUsers() {
         return userMapper.toDtoList(userRepository.findAll());
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public AppUserDto getUserById(Long id) throws AppUserNotFoundException {
         return userMapper.toDto(userRepository.findById(id).orElseThrow(
             () -> new AppUserNotFoundException("Get : user with ID " + id + " not found."))
@@ -36,6 +43,7 @@ public class AppUserManagement implements AppUserService {
 
     @Override
     @Transactional
+    @PreAuthorize("hasRole('ADMIN')")
     public AppUserDto createUser(AppUserDto userDto) throws AppUserDuplicateUserNameException, AppUserDuplicateEmailException {
         if(userRepository.findByUsername(userDto.getUsername()).isPresent()) {
             throw new AppUserDuplicateUserNameException("Create : username '" + userDto.getUsername() + "' is already taken.");
@@ -43,11 +51,14 @@ public class AppUserManagement implements AppUserService {
         if(userRepository.findByEmail(userDto.getEmail()).isPresent()) {
             throw new AppUserDuplicateEmailException("Create : email '" + userDto.getEmail() + "' is already taken.");
         }
-        return userMapper.toDto(userRepository.save(userMapper.toEntity(userDto)));
+        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        AppUser user = userMapper.toEntity(userDto);     
+        return userMapper.toDto(userRepository.save(user)); 
     }
 
     @Override
     @Transactional
+    @PreAuthorize("hasRole('ADMIN')")
     public AppUserDto updateUser(AppUserDto userDtoBeforeUpdate, AppUserDto userDtoToUpdate) throws AppUserDuplicateUserNameException, AppUserDuplicateEmailException {        
 
         if(userRepository.findByUsername(userDtoToUpdate.getUsername()).isPresent() &&
@@ -58,11 +69,13 @@ public class AppUserManagement implements AppUserService {
         !userDtoToUpdate.getEmail().equals(userDtoBeforeUpdate.getEmail())) {
             throw new AppUserDuplicateEmailException("Update : email '" + userDtoToUpdate.getEmail() + "' is already taken.");
         }
+        userDtoToUpdate.setPassword(passwordEncoder.encode(userDtoToUpdate.getPassword()));
         return userMapper.toDto(userRepository.save(userMapper.toEntity(userDtoToUpdate)));
     }
 
     @Override
     @Transactional
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteUser(Long id) throws AppUserNotFoundException {
         if(userRepository.findById(id).isEmpty()) {
             throw new AppUserNotFoundException("Delete : user with ID " + id + " not found.");

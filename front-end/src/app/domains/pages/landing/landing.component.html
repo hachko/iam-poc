@@ -1,0 +1,4 @@
+<app-header></app-header>
+<div class="landing-content">
+    <app-users-list *ngIf="(authService.currentUser$ | async) as user"></app-users-list>            
+</div>

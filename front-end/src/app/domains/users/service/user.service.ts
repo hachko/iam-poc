@@ -13,7 +13,7 @@ export class UserService {
     constructor(private http: HttpClient, private ms: MessageService) {}
 
     getUsers(): Observable<User[]> {
-        return this.http.get<User[]>(this.apiUrl + '/all').pipe(
+        return this.http.get<User[]>(this.apiUrl + '/all', {withCredentials: true}).pipe(
             tap(users => {
                 console.log('users fetched : ', users);
                 const text = 'users sucessfully fetched ! ';
@@ -29,7 +29,7 @@ export class UserService {
     }
 
     getUserById(id: number): Observable<User> {
-        return this.http.get<User>(`${this.apiUrl}/${id}`).pipe(
+        return this.http.get<User>(`${this.apiUrl}/${id}`, {withCredentials: true}).pipe(
             tap(user => {
                 this.ms.show({type: 'success', text: 'user ' + user.username + 'fetched'})
             }),
@@ -43,7 +43,7 @@ export class UserService {
     }
 
     createUser(user: User): Observable<User> {
-        return this.http.post<User>(this.apiUrl + '/create', user).pipe(
+        return this.http.post<User>(this.apiUrl + '/create', user, {withCredentials: true}).pipe(
             tap(user => {
                 console.log('user created successfully : ', user);
                 const text = 'user' +  user.username + 'created successfully';
@@ -59,7 +59,7 @@ export class UserService {
     }
 
     updateUser(id: number, user: User): Observable<User> {
-        return this.http.put<User>(`${this.apiUrl + '/update'}/${id}`, user).pipe(
+        return this.http.put<User>(`${this.apiUrl + '/update'}/${id}`, user, {withCredentials: true}).pipe(
             tap(usr => {
                 this.ms.show({type: 'success', text: 'user ' + usr.username + ' updated successfully'})
             }),
@@ -73,7 +73,7 @@ export class UserService {
     }
 
     deleteUser(id: number): Observable<void> {
-        return this.http.delete<void>(`${this.apiUrl + '/delete'}/${id}`).pipe(
+        return this.http.delete<void>(`${this.apiUrl + '/delete'}/${id}`, {withCredentials: true}).pipe(
             tap(() => {
                 const text = 'user id : ' + id + ' deleted successfully';
                 this.ms.show({ type: 'success', text });
