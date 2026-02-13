@@ -26,6 +26,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
 @WebMvcTest(AppUserController.class)
 public class AppUserControllerTest {
@@ -34,38 +35,45 @@ public class AppUserControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private AppUserManagement appUserManagement;    
+    private AppUserManagement appUserManagement;
 
     @Test
+    @WithMockUser(username = "JohnDoe", roles = {"ADMIN"})
     void shouldCreateUserSuccessfully() throws Exception {
         when(appUserManagement.createUser(any())).thenReturn(AppUserDto.builder().build());
         mockMvc.perform(
             post("/api/users/create")
+            .with(csrf())        
             .contentType(MediaType.APPLICATION_JSON)
             .content("{\"username\": \"testuser\", \"email\": \"testuser@example.com\", \"password\": \"password123\"}"))
             .andExpect(status().isCreated());
     }
 
     @Test
+    @WithMockUser(username = "JohnDoe", roles = {"ADMIN"})
     void shouldNotCreateUserWhenIdProvided() throws Exception {
         mockMvc.perform(
             post("/api/users/create")
+            .with(csrf())
             .contentType(MediaType.APPLICATION_JSON)
             .content("{\"id\": 1, \"username\": \"testuser\", \"email\": \"testuser@example.com\", \"password\": \"password123\"}"))
             .andExpect(status().isBadRequest());
     }
 
     @Test
+    @WithMockUser(username = "JohnDoe", roles = {"ADMIN"})
     void shoulNotCreateUserWhenExceptionThrownFromService() throws Exception {
         when(appUserManagement.createUser(any())).thenThrow(new AppUserConflictException("Service error"));
         mockMvc.perform(
             post("/api/users/create")
+            .with(csrf())
             .contentType(MediaType.APPLICATION_JSON)
             .content("{\"username\": \"testuser\", \"email\": \"testuser@example.com\", \"password\": \"password123\"}"))
             .andExpect(status().isConflict());
     }
 
     @Test
+    @WithMockUser(username = "JohnDoe", roles = {"ADMIN"})
     void shouldGetUserByIdSuccessfully() throws Exception {
         when(appUserManagement.getUserById(anyLong())).thenReturn(
             AppUserDto.builder()
@@ -76,6 +84,7 @@ public class AppUserControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "JohnDoe", roles = {"ADMIN"})
     void shouldGetErrorWhenUserNotFoundById() throws Exception {
         when(appUserManagement.getUserById(anyLong())).thenThrow(new AppUserNotFoundException("User not found"));
         mockMvc.perform(get("/api/users/1"))
@@ -83,6 +92,7 @@ public class AppUserControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "JohnDoe", roles = {"ADMIN"})
     void shouldUpdateUserSuccessfully() throws Exception {
         when(appUserManagement.updateUser(any(), any())).thenReturn(
             AppUserDto.builder()
@@ -90,43 +100,52 @@ public class AppUserControllerTest {
         );
         mockMvc.perform(
             put("/api/users/update/1")
+            .with(csrf())
             .contentType(MediaType.APPLICATION_JSON)
             .content("{\"id\": 1, \"username\": \"updateduser\", \"email\": \"test.user@example.com\"}"))
             .andExpect(status().isOk());
     }
 
     @Test
+    @WithMockUser(username = "JohnDoe", roles = {"ADMIN"})
     void shouldGetErrorWhenUserToUpdateNotFound() throws Exception {
         when(appUserManagement.updateUser(any(), any())).thenThrow(new AppUserNotFoundException("User to update not found"));
         mockMvc.perform(
             put("/api/users/update/1")
+            .with(csrf())
             .contentType(MediaType.APPLICATION_JSON)
             .content("{\"id\": 1, \"username\": \"updateduser\", \"email\": \"test.user@example.com\"}"))
             .andExpect(status().isNotFound());
     }
 
     @Test
+    @WithMockUser(username = "JohnDoe", roles = {"ADMIN"})
     void shouldGetErrorWhenExceptionThrownFromService() throws Exception {
         when(appUserManagement.updateUser(any(), any())).thenThrow(new AppUserConflictException("Service error"));        
         mockMvc.perform(
             put("/api/users/update/1")
+            .with(csrf())
             .contentType(MediaType.APPLICATION_JSON)
             .content("{\"id\": 1, \"username\": \"updateduser\", \"email\": \"test.user@example.com\"}"))
             .andExpect(status().isConflict());
     }
 
     @Test
+    @WithMockUser(username = "JohnDoe", roles = {"ADMIN"})
     void shouldDeleteUserSuccessfully() throws Exception {
         mockMvc.perform(
-            delete("/api/users/delete/1"))
+            delete("/api/users/delete/1")
+            .with(csrf()))            
             .andExpect(status().isNoContent());
     }
 
     @Test
+    @WithMockUser(username = "JohnDoe", roles = {"ADMIN"})
     void shouldGetErrorWhenDeleteUserNotFound() throws Exception {
         doThrow(AppUserNotFoundException.class).when(appUserManagement).deleteUser(anyLong());
         mockMvc.perform(
-            delete("/api/users/delete/1"))
+            delete("/api/users/delete/1")
+            .with(csrf()))            
             .andExpect(status().isNotFound());
     }
 

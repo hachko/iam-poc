@@ -24,6 +24,7 @@ export class AuthService {
         ).pipe(
             tap(user => {
                 this.currentUser$$.next(user);
+                console.log('authenticated user : ', user);
                 sessionStorage.setItem('currentUser', JSON.stringify(user))
             }), catchError(error => {                
                 this.msgService.show({type: 'error', text: 'login failed'});
@@ -50,7 +51,7 @@ export class AuthService {
     }
 
     hasRole(rolename: string): boolean {
-        const rolenames = this.currentUser$$.value?.roles.map(role => role.name) || [];
+        const rolenames = this.currentUser$$.value?.roles.map(role => role.name) || [];        
         return rolenames.includes(rolename);
     }
 

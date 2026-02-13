@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
-import { HeaderComponent } from "../../shared/header/header.component";
 import { AuthService } from '../../shared/auth/auth.service';
 
 @Component({
   selector: 'app-non-admin',
   standalone: true,
-  imports: [HeaderComponent],
+  imports: [],
   templateUrl: './non-admin.component.html',
   styleUrl: './non-admin.component.css'
 })

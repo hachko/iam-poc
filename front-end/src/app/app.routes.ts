@@ -9,7 +9,6 @@ import { AuthGuard } from './domains/shared/auth/auth.guard';
 export const routes: Routes = [
     { path: '', component: LandingComponent },
     { path: 'login', component: LoginComponent },
-    { path: 'non-admin', component: NonAdminComponent, canActivate: [AuthGuard] },
     { 
         path: 'users', component: UsersAdminPageComponent, 
         canActivate: [AuthGuard], data: {roles: ['ADMIN']}

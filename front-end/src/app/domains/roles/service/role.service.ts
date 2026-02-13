@@ -14,7 +14,7 @@ export class RoleService {
     constructor(private http: HttpClient) {}
 
     getRoles(): Observable<Role[]> {
-        return this.http.get<Role[]>(this.apiUrl + 'all').pipe(
+        return this.http.get<Role[]>(this.apiUrl + 'all', {withCredentials: true}).pipe(
             tap(roles => console.log('roles fetched : ', roles)),
             catchError(err => {
                 console.log('error fetching roles : ', err);

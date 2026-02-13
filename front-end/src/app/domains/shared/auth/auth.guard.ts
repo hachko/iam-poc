@@ -5,7 +5,7 @@ import { Injectable } from "@angular/core";
 @Injectable({providedIn: 'root'})
 export class AuthGuard implements CanActivate {
     constructor(private authService: AuthService, private router: Router) {}
-    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): MaybeAsync<GuardResult> {
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): MaybeAsync<GuardResult> {        
         if (this.authService.isLoggedIn()) {
             const requiredRoles = route.data['roles'] as string[] | undefined;
             if (requiredRoles && requiredRoles.length > 0) {
