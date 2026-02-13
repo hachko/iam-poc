@@ -1,5 +1,7 @@
 package org.hachko.poc.dto;
 
+import java.util.Set;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -8,7 +10,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Builder
+@Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 public class AppUserDto {
@@ -16,4 +18,5 @@ public class AppUserDto {
     private String username;
     private String email;
     private String password;
+    private Set<RoleDto> roles;
 }

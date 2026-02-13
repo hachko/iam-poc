@@ -16,3 +16,11 @@ spring:
   h2:
     console:
       enabled: true
+server:
+  servlet: 
+    session:
+      cookie:
+        same-site: LAX
+        secure: false
+logging:
+  exception-conversion-word: '%m%n'

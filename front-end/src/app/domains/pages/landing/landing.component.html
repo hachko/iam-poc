@@ -1,0 +1,4 @@
+<div class="landing-content">
+    <app-users-list *ngIf="authService.isLoggedIn() && authService.hasRole('ADMIN')"></app-users-list>
+    <app-non-admin *ngIf="authService.isLoggedIn() && !authService.hasRole('ADMIN')"></app-non-admin>
+</div>

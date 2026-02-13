@@ -1,0 +1,15 @@
+.msg-container {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  z-index: 1000;
+}
+.msg { min-width: 260px; max-width: 360px; padding: .6rem .8rem; border-radius: 6px; box-shadow: 0 4px 10px rgba(0,0,0,.12); color: #111;}
+.msg--success { background:#dff0d8; border-left:4px solid #28a745 }
+.msg--error   { background:#f8d7da; border-left:4px solid #dc3545 }
+.msg--warning { background:#fff3cd; border-left:4px solid #ffc107 }
+.msg--info    { background:#d1ecf1; border-left:4px solid #17a2b8 }
+.msg__close { background: transparent; border: none; font-size: 1.1rem; cursor: pointer; }

@@ -1,0 +1,23 @@
+.users-admin {
+  background-color: #fff;
+  padding: 1rem;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-add {
+  background-color: #34a853;
+  color: #fff;
+  border-radius: 4px;
+}

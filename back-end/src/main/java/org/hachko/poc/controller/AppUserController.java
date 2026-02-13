@@ -4,11 +4,10 @@ import java.util.List;
 
 import org.hachko.poc.dto.AppUserDto;
 import org.hachko.poc.exception.user.AppUserConflictException;
-import org.hachko.poc.exception.user.AppUserDuplicateEmailException;
-import org.hachko.poc.exception.user.AppUserDuplicateUserNameException;
 import org.hachko.poc.exception.user.AppUserNotFoundException;
 import org.hachko.poc.service.AppUserService;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
@@ -16,7 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 import lombok.AllArgsConstructor;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/api/users")
+@CrossOrigin(origins = "http://localhost:4200")
 @AllArgsConstructor
 public class AppUserController {
 
@@ -47,7 +47,7 @@ public class AppUserController {
     }
 
     @PostMapping("/create")
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.CREATED)    
     public AppUserDto createUser(@RequestBody AppUserDto userDto) {
         if(userDto.getId() != null) {
             throw new ResponseStatusException(
@@ -63,7 +63,8 @@ public class AppUserController {
         }        
     }
 
-    @PutMapping("/update")
+    @PutMapping("/update/{id}")
+    @CrossOrigin(origins = "http://localhost:4200", methods = {RequestMethod.PUT, RequestMethod.OPTIONS})
     @ResponseStatus(HttpStatus.OK)
     public AppUserDto updateUser(@RequestBody AppUserDto userDto) {
         if(userDto.getId() == null) {
@@ -72,7 +73,8 @@ public class AppUserController {
             );
         }
         try {
-            return appUserService.updateUser(userDto);
+            AppUserDto userDtoBeforeUpdate = appUserService.getUserById(userDto.getId());
+            return appUserService.updateUser(userDtoBeforeUpdate, userDto);
         } catch (AppUserConflictException apusex) {
             throw new ResponseStatusException(
                 HttpStatus.CONFLICT, apusex.getMessage()

@@ -4,20 +4,20 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.hachko.poc</groupId>
   <artifactId>iam-poc</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>1.0.0-SNAPSHOT</version>
   <packaging>jar</packaging>
   <properties>
-    <java.version>18</java.version>
-    <lombok.version>1.18.28</lombok.version>
-    <mapstruct.version>1.5.5.Final</mapstruct.version>
+    <java.version>22</java.version>
+    <lombok.version>1.18.34</lombok.version>
+    <mapstruct.version>1.6.3</mapstruct.version>
     <h2.version>2.2.224</h2.version>
   </properties>
 
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>3.1.12</version>
-    <relativePath/> <!-- lookup parent from repository -->
+    <version>3.3.5</version>
+    <relativePath/>
   </parent>
 
   <dependencies>
@@ -28,6 +28,10 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-data-jpa</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-security</artifactId>
     </dependency>
     <dependency>
       <groupId>com.h2database</groupId>
@@ -41,6 +45,11 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<version>${lombok.version}</version>
@@ -51,7 +60,6 @@
         <groupId>org.mapstruct</groupId>
         <artifactId>mapstruct</artifactId>
         <version>${mapstruct.version}</version>
-        <scope>provided</scope>
     </dependency>
   </dependencies>
 
@@ -64,10 +72,14 @@
       <plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.1</version>
+				<version>3.11.0</version>
 				<configuration>
 					<source>${java.version}</source>
 					<target>${java.version}</target>
+          <compilerArgs>
+            <arg>-Amapstruct.verbose=true</arg>
+            <arg>-parameters</arg>
+          </compilerArgs>
 					<annotationProcessorPaths>
 						<path>
 							<groupId>org.projectlombok</groupId>
@@ -82,6 +94,25 @@
 					</annotationProcessorPaths>
 				</configuration>
 			</plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>3.2.0</version>
+        <executions>
+          <execution>
+            <id>add-generated-sources</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>add-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>${project.build.directory}/generated-sources/annotations</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 </project>
