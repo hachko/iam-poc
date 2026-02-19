@@ -1,70 +1,57 @@
-:root {
-    --form-label-width: 150px;
-    --gap-row: 0.6rem;
-    --gap-col: 1rem;
-    --input-padding: 0.45rem 0.6rem;
-    --border: 1px solid #d0d7de;
-    --radius: 6px;
-    --focus: 0 0 0 3px rgba(25, 118, 210, 0.12);
+form {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: var(--spacing-xl);
+  background-color: #fff;
+  border-radius: var(--border-radius);
+  border: var(--border-thin);
+  box-shadow: var(--shadow-sm);
 }
 
-.user-form {
-    display: grid;
-    grid-template-columns: var(--form-label-width) 1fr;
-    gap: var(--gap-row) var(--gap-col);
-    align-items: center;
-    max-width: 720px;
+form h2 {
+  margin-bottom: var(--spacing-lg);
+  text-align: center;
+  color: var(--neutral-800);
 }
 
-.form-row label {
-    justify-self: end;
-    font-weight: 600;
-    padding-right: 0.5rem;
+input {
+  width: 100%;
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  border: var(--border-thin);
+  border-radius: var(--border-radius);
+  font-size: var(--font-size-base);
+  transition: all 0.2s ease;
+  box-sizing: border-box;
 }
 
-.form-row input,
-.form-row select,
-.form-row textarea {
-    width: 100%;
-    padding: var(--input-padding);
-    border: var(--border);
-    border-radius: var(--radius);
-    box-sizing: border-box;
-    background: #fff;
+input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
 }
 
-.form-row input:focus,
-.form-row select:focus,
-.form-row textarea:focus {
-    outline: none;
-    box-shadow: var(--focus);
-    border-color: #1976d2;
+button {
+  width: 100%;
+  padding: var(--spacing-md);
+  background-color: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--border-radius);
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-.form-actions {
-    grid-column: 2;
-    margin-top: 0.4rem;
+button:hover {
+  background-color: var(--primary-light);
+  box-shadow: var(--shadow-md);
 }
 
-.btn-primary {
-    background: #1976d2;
-    color: #fff;
-    border: none;
-    padding: 0.5rem 0.8rem;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-@media (max-width: 640px) {
-    .user-form {
-        grid-template-columns: 1fr;
-    }
-
-    .form-row label {
-        justify-self: start;
-    }
-
-    .form-actions {
-        grid-column: 1;
-    }
+.error-message {
+  color: var(--error);
+  font-size: 12px;
+  margin-top: -var(--spacing-md);
+  margin-bottom: var(--spacing-md);
 }

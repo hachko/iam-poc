@@ -1,23 +1,41 @@
 .users-admin {
   background-color: #fff;
-  padding: 1rem;
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius);
+  border: var(--border-thin);
+  box-shadow: var(--shadow-sm);
 }
 
 .page-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
+  margin-bottom: var(--spacing-lg);
+  padding-bottom: var(--spacing-md);
+  border-bottom: var(--border-thin);
+}
+
+.page-header h2 {
+  margin: 0;
+  color: var(--neutral-800);
 }
 
 .btn {
-  padding: 0.5rem 1rem;
+  padding: var(--spacing-sm) var(--spacing-md);
   border: none;
+  border-radius: var(--border-radius);
+  font-size: var(--font-size-base);
+  font-weight: 500;
   cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .btn-add {
-  background-color: #34a853;
+  background-color: var(--success);
   color: #fff;
-  border-radius: 4px;
+}
+
+.btn-add:hover {
+  background-color: #2d8659;
+  box-shadow: var(--shadow-md);
 }

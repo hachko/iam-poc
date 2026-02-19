@@ -1,48 +1,79 @@
 .user-list table {
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 1rem;
+  margin-bottom: var(--spacing-lg);
 }
 
 .user-list th, .user-list td {
-  border: 1px solid #dadce0;
-  padding: 0.5rem;
+  border: var(--border-thin);
+  padding: var(--spacing-md);
   text-align: left;
 }
 
 .user-list th {
-  background-color: #f1f3f4;
+  background-color: var(--neutral-100);
+  font-weight: 600;
+  color: var(--neutral-800);
 }
 
 .user-list tr:hover {
-  background-color: #f9f9f9;
+  background-color: var(--neutral-50);
 }
 
 .btn {
-  margin-right: 0.5rem;
-  padding: 0.3rem 0.6rem;
+  margin-right: var(--spacing-sm);
+  padding: var(--spacing-xs) var(--spacing-md);
   border: none;
-  border-radius: 4px;
+  border-radius: var(--border-radius);
   cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.2s ease;
 }
 
 .btn-view {
-  background-color: #1a73e8;
+  background-color: var(--primary);
   color: #fff;
+}
+
+.btn-view:hover {
+  background-color: var(--primary-light);
+  box-shadow: var(--shadow-md);
 }
 
 .btn-edit {
-  background-color: #fbbc04;
+  background-color: var(--warning);
   color: #000;
 }
 
+.btn-edit:hover {
+  background-color: #f0ae00;
+  box-shadow: var(--shadow-md);
+}
+
 .btn-delete {
-  background-color: #ea4335;
+  background-color: var(--error);
   color: #fff;
 }
 
+.btn-delete:hover {
+  background-color: #d33426;
+  box-shadow: var(--shadow-md);
+}
+
 .btn-add {
-  background-color: #34a853;
+  background-color: var(--success);
   color: #fff;
-  padding: 0.5rem 1rem;
+  padding: var(--spacing-sm) var(--spacing-md);
+}
+
+.btn-add:hover {
+  background-color: #2d8659;
+  box-shadow: var(--shadow-md);
+}
+
+.add-user {
+  margin-top: var(--spacing-lg);
+  padding-top: var(--spacing-lg);
+  border-top: var(--border-thin);
 }

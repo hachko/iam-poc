@@ -1,0 +1,8 @@
+.non-admin-content {
+  padding: var(--spacing-lg);
+  background-color: #fff;
+  border-radius: var(--border-radius);
+  border: var(--border-thin);
+  box-shadow: var(--shadow-sm);
+  text-align: center;
+}

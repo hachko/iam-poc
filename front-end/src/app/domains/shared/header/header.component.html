@@ -1,10 +1,15 @@
-<header>
-    <h1>Identity Management Tool</h1>
-    <div *ngIf="(currentUser$ | async) as user; else notLoggedIn">
-        <span> Welcome, {{user.username}}</span>
-        <button (click)="onLogout()">Logout</button>
+<header class="app-header">
+    <div class="header-brand">
+        <img src="manager.png" alt="Logo" class="logo">
+        <h1>Identity Management Tool</h1>
     </div>
-    <ng-template #notLoggedIn>
-        <button [routerLink]="['/login']">Login</button>
-    </ng-template>
+    <div class="header-actions">
+        <div *ngIf="(currentUser$ | async) as user; else notLoggedIn">
+            <span class="welcome-text"> Welcome, {{user.username}}</span>
+            <button class="btn btn-logout" (click)="onLogout()">Logout</button>
+        </div>
+        <ng-template #notLoggedIn>
+            <button [routerLink]="['/login']">Login</button>
+        </ng-template>
+    </div>    
 </header>
