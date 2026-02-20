@@ -48,6 +48,7 @@
   top: var(--spacing-md);
   right: var(--spacing-md);
   background: transparent;
+  background-color: tomato;
   border: none;
   font-size: 24px;
   cursor: pointer;

@@ -11,20 +11,55 @@
         <label for="password">Password</label> 
         <input id="password" formControlName="password" type="password" /> 
     </div>
-    <div class="form-row"> 
-        <label for="roles">Roles</label> 
-        <select id="roles" formControlName="roles" multiple>
-            <option *ngFor="let role of availableRoles$ | async" [ngValue]="role">
-                {{ role.name }} 
-            </option>
-        </select> 
+    
+    <div class="roles-section">
+        <div class="roles-container">
+            <div class="roles-column">
+                <label for="userRoles">User Roles</label>
+                <div class="roles-display">
+                    <span class="role-tag" *ngFor="let role of userRoles">
+                        {{ role.name }}
+                        <button type="button" class="role-remove" (click)="removeRole(role)" title="Remove role">×</button>
+                    </span>
+                    <span class="roles-empty" *ngIf="userRoles.length === 0">No roles assigned</span>
+                </div>
+            </div>
+
+            <div class="roles-column">
+                <label for="availableRoles">Available Roles</label>
+                <select id="availableRoles" [(ngModel)]="selectedAvailableRole" 
+                name="availableRoles" class="roles-select" [ngModelOptions]="{standalone: true}">
+                    <option [ngValue]="null">-- Select a role --</option>
+                    <option *ngFor="let role of availableRoles$ | async" [ngValue]="role">
+                        {{ role.name }}
+                    </option>
+                </select>
+                <button type="button" class="btn-role-action btn-add-role" (click)="addRole()" [disabled]="!selectedAvailableRole">
+                    + Add Role
+                </button>
+            </div>
+        </div>
     </div>
+
     <div class="form-actions"> 
         <button type="submit" class="btn-primary">Save</button> 
     </div>
 </form>
-<div *ngIf="mode === 'view'">
-    <p><strong>Username:</strong> {{ user?.username }}</p>
-    <p><strong>Email:</strong> {{ user?.email }}</p>
-    <p><strong>Roles:</strong> {{ roleNames }}</p>
+
+<div class="user-view" *ngIf="mode === 'view'">
+    <div class="view-item">
+        <strong>Username:</strong>
+        <span>{{ user?.username }}</span>
+    </div>
+    <div class="view-item">
+        <strong>Email:</strong>
+        <span>{{ user?.email }}</span>
+    </div>
+    <div class="view-item">
+        <strong>Roles:</strong>
+        <div class="role-tags-view">
+            <span class="role-tag" *ngFor="let role of user?.roles">{{ role.name }}</span>
+            <span class="roles-empty" *ngIf="!user?.roles || user?.roles?.length === 0">No roles assigned</span>
+        </div>
+    </div>
 </div>

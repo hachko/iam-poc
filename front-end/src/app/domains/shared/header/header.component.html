@@ -5,7 +5,7 @@
     </div>
     <div class="header-actions">
         <div *ngIf="(currentUser$ | async) as user; else notLoggedIn">
-            <span class="welcome-text"> Welcome, {{user.username}}</span>
+            <span class="welcome-text"> Welcome, {{user.username}} ! </span>
             <button class="btn btn-logout" (click)="onLogout()">Logout</button>
         </div>
         <ng-template #notLoggedIn>

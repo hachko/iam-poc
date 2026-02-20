@@ -1,4 +1,4 @@
-import { BehaviorSubject, Observable } from "rxjs";
+import { BehaviorSubject, map, Observable } from "rxjs";
 import { Role } from "../model/role.model";
 import { RoleService } from "../service/role.service";
 import { Injectable } from "@angular/core";
@@ -18,5 +18,15 @@ export class RoleAggregate {
 
     get allRoles(): Observable<Role[]> {
         return this.role$.asObservable();
+    }
+
+    getAvailableRoles(excludeRoles: Role[]): Observable<Role[]> {
+        return this.role$.asObservable().pipe(
+            map(allRoles => 
+                allRoles.filter(role => 
+                    !excludeRoles.find(r => r.id === role.id)
+                )
+            )
+        );
     }
 }
