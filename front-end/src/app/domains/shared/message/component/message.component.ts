@@ -19,8 +19,7 @@ export class MessageComponent implements OnInit {
         this.messages$ = this.messageService.getMessages();
     }
 
-    dismiss(message: Message) {
-        console.log('dimissing message : ', message.text);
+    dismiss(message: Message) {        
         this.messageService.clear(message);        
     }
 
